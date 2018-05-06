@@ -5,5 +5,5 @@
 
 module.exports = {
     secret: 'SUPERSECRETPW7463733',
-    postgresql: postgresql-crystalline-78386
+    postgresql: process.env.DATABASE_URL
 }
