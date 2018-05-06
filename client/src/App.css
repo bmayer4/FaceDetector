@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.particles {
+  position: fixed;
+  /* top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; */
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.member-link {
+  display: inline-block;
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+.signin-link {
+  padding-left: 5px;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+.signin-link:hover {
+  color: rgb(84, 212, 230);
+}
+
+
