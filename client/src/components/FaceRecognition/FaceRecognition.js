@@ -1,9 +1,11 @@
 import React from 'react';
 import './FaceRecognition.css';
+import { connect } from 'react-redux';
 
-const FaceRecognition = ({ imageUrl, boxes }) => {
+const FaceRecognition = (props) => {
+    console.log('imagebox', props.image);
 
-    const renderBoxes = boxes.map((box, i) => {
+    const renderBoxes = props.image.boxes.length > 0 && props.image.boxes.map((box, i) => {
         return (
             <div key={i} className='bounding-box' style={{
             top: box.topRow,
@@ -18,12 +20,12 @@ const FaceRecognition = ({ imageUrl, boxes }) => {
     return (
         <div className='center ma'>
             <div className='relative mt2'>
-            <img id='inputImage' alt='' src={imageUrl} style={{
-                width: '600px',
-                height: 'auto',
-                marginBottom: '30px',
-                borderRadius: '2px'
-            }}/>
+                <img id='inputImage' alt='' src={props.image.b} style={{
+                    width: '600px',
+                    height: 'auto',
+                    marginBottom: '30px',
+                    borderRadius: '2px'
+                }}/> 
             {
               renderBoxes
             }
@@ -32,4 +34,12 @@ const FaceRecognition = ({ imageUrl, boxes }) => {
     );
 }
 
-export default FaceRecognition;
+const mapStateToProps = (state) => {
+    return {
+       image: state.image
+       }
+  }
+  
+  
+export default connect(mapStateToProps)(FaceRecognition);
+

@@ -39,8 +39,10 @@ app.post('/api/register', (req, res) => {
                 db.one(`INSERT INTO users (name, email) VALUES ('${name}', '${email}') RETURNING *`).then((doc) => {
                     res.send(doc);
                 }).catch((e) => {
-                    res.status(400).send(e);
+                    res.status(400).send({ error: 'Unable to register' });
                 });
+             } else {
+                res.status(400).send( {error: 'Unable to register' });
              }
         });
     });
@@ -59,9 +61,11 @@ app.post('/api/signin', (req, res) => {
                 res.cookie('x-auth', token).send(doc);
             });
          });
+        } else {
+            res.status(400).send({ error: 'Unable to login' });
         }
     }).catch((e) => { 
-        res.status(400).send(e); 
+        res.status(400).send( {error: 'Unable to login' }); 
     });
 });
 
@@ -73,9 +77,17 @@ app.delete('/api/signout', auth, (req, res) => {
     
 });
 
+// app.post('/api/image', auth, (req, res) => {
+//     db.none(`UPDATE users SET entries=entries + 1 WHERE email='${req.user.email}'`).then(() => {
+//         res.send('image count incremented');
+//     }).catch((e) => { res.status(400).send({ error: true }) });
+// });
+
 app.post('/api/image', auth, (req, res) => {
     db.none(`UPDATE users SET entries=entries + 1 WHERE email='${req.user.email}'`).then(() => {
-        res.send('image count incremented');
+        db.one(`SELECT entries FROM users WHERE email='${req.user.email}'`).then((entries) => {
+            res.send(entries);
+        });    
     }).catch((e) => { res.status(400).send({ error: true }) });
 });
 

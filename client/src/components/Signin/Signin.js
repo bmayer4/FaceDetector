@@ -10,6 +10,12 @@ class Signin extends Component {
       password: ''
     }
 
+    componentWillUnmount() {
+      if (this.props.auth) {
+        this.props.auth.loginError = '';
+      }
+    }
+
     emailChange = (e) => {
       const email = e.target.value
       this.setState({ email })
@@ -34,7 +40,8 @@ class Signin extends Component {
         <form className="pa4 black-80" onSubmit={this.submitForm}>
         <div className="measure">
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-            <legend className="f3 fw6 ph0 mh0" style={{ fontWeight: '300'}}>Sign In</legend>
+            <legend className="f3 fw6 ph0 mh0 center" style={{ fontWeight: '300'}}>Sign In</legend>
+            <div className="formError center">{this.props.auth && this.props.auth.loginError}</div>
             <div className="mt3">
               <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
               <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address" onChange={this.emailChange} value={this.state.email}/>
@@ -55,6 +62,13 @@ class Signin extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  console.log(state.auth);
+  return {
+    auth: state.auth
+  }
+}
+
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
       signinUser: (data) => { dispatch(signinUser(data)) }
@@ -62,4 +76,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 
-export default connect(null, mapDispatchToProps)(Signin)
+export default connect(mapStateToProps, mapDispatchToProps)(Signin)

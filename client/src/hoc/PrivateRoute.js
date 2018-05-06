@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 export const PrivateRoute = ({ auth, component: Component, ...rest }) => (
     <Route {...rest} component={(props) => (   
-        auth ? (
+        auth && auth.id ? (
             <div>
             <Component {...props}/>
             </div>
@@ -14,14 +14,11 @@ export const PrivateRoute = ({ auth, component: Component, ...rest }) => (
     )}/>
 );
 
-// const mapStateToProps = (state) => ({
-//     auth: !!state.auth
-// });
 
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        auth: !!state.auth
+        auth: state.auth
     }
 }
 

@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 export const PublicRoute = ({ auth, component: Component, ...rest }) => (
     <Route {...rest} component={(props) => (
-        auth ? (
+        auth && auth.id ? (
             <Redirect to="/" />
         ) : (
             <Component {...props}/> 
@@ -13,8 +13,11 @@ export const PublicRoute = ({ auth, component: Component, ...rest }) => (
     )}/>
 );
 
-const mapStateToProps = (state) => ({
-    auth: !!state.auth    //null becomes false
-});
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+        auth: state.auth
+    }
+}
 
 export default connect(mapStateToProps)(PublicRoute);

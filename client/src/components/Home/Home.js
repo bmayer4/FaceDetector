@@ -1,51 +1,40 @@
 import React, { Component } from 'react';
 import Navigation from '../Navigation/Navigation';
 import Logo from '../Logo/Logo';
-import Rank from '../Rank/Rank';
 import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 import FaceRecognition from '../FaceRecognition/FaceRecognition';
-import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
+import { connect } from 'react-redux';
+import { addImage, image, box } from '../../actions';
 
 const app = new Clarifai.App({
-  apiKey: 'f79d44c4bfee40caa193653bb0d22734'
+  apiKey: 'a275d7dc7fd34912a41fa811783c1b7c'  //only 100 available
  });
 
-const particlesOptions = {
-  particles: {
-    number: {
-      value: 150,
-      density: {
-        enable: true,
-        value_area: 800
-      }
-    }
-  }
-}
 
 class Home extends Component {
 
   state = {
     input: '',
-    imageURL: '',
     boxes: []
   }
 
   onInputChange = (e) => { this.setState({ input: e.target.value}); }
 
   onSubmit = () => { 
-    this.setState({ imageURL: this.state.input })
-                                                  
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then((response) => {
-     const boxes = response.outputs[0].data.regions.map((item) => { return item.region_info.bounding_box });
-      //dispatch action to increment count
-     this.displayFaceBox(this.calcFaceLocation(boxes));
-    }).catch((err) => {
-      console.log('error', err);
-    });
+    if (!this.state.input) { return }
+        this.props.image(this.state.input);
+        app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then((response) => {
+          const boxes = response.outputs[0].data.regions.map((item) => { return item.region_info.bounding_box });
+          this.displayFaceBox(this.calcFaceLocation(boxes));
+          this.props.addImage();
+          this.props.box(this.state.boxes);
+         }).catch((err) => {
+           console.log('error', err);
+         });  
   }
 
-  displayFaceBox = (boxes) => { this.setState({ boxes: boxes }); }
+  displayFaceBox = (boxes) => { this.setState({ boxes: boxes }) ;}
 
   calcFaceLocation = (data) => {
     const image = document.getElementById('inputImage');
@@ -65,14 +54,13 @@ class Home extends Component {
   render() {
     return (
       <div className="App">
-      <Particles params={ particlesOptions } className='particles' />
-      <Navigation />
+      <Navigation /> 
+      <Logo />
       {  
         <div>
-        <Logo />
-        <Rank />
+        <p className='entries'>{`You have ${this.props.auth.entries} entries`}</p>
         <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
-        <FaceRecognition imageUrl={this.state.imageURL} boxes={this.state.boxes}/>
+        <FaceRecognition />
         </div> 
       }
       </div>
@@ -80,4 +68,18 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+     auth: state.auth
+     }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    addImage: () => dispatch(addImage()),
+    image: (img) => dispatch(image(img)),
+    box: (b) => dispatch(box(b))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

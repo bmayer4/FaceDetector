@@ -34,4 +34,25 @@
   color: rgb(84, 212, 230);
 }
 
+.formError {
+  color: rgb(158, 7, 7);
+  margin-top: 5px;
+  margin-bottom: -2px;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+.profile {
+  text-align: center;
+  font-size: 22px;
+}
+
+.entries {
+  color: white;
+  font-weight: 300;
+  font-size: 22px;
+}
+
 
