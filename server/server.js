@@ -9,7 +9,7 @@ const port = process.env.PORT || 3001;
 const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
-const connection = 'postgres://localhost:5432/face-detector';
+const connection = keys.postgresql;
 const db = pgp(connection);
 
 const app = express();
