@@ -10,8 +10,12 @@ const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
 //const connection = keys.postgresql;
+// const cn = {
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: true
+// };
 const cn = {
-    connectionString: process.env.DATABASE_URL,
+    host: process.env.DATABASE_URL,
     ssl: true
 };
 const db = pgp(cn);
