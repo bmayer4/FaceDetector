@@ -2,13 +2,14 @@ const pgp = require('pg-promise')();
 const connection = 'postgres://localhost:5432/face-detector';
 const db = pgp(connection);
 const jwt = require('jsonwebtoken');
+const keys = require('../config/keys');
 
 let auth = (req, res, next ) => {
     let token = req.cookies['x-auth'];
 
     let decoded;  
     try {
-        decoded = jwt.verify(token, 'cow');
+        decoded = jwt.verify(token, keys.secret);
     } catch (e) {
         return Promise.reject();
     }

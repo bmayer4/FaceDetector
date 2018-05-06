@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const { auth } = require('./middleware/auth');
 const port = process.env.PORT || 3001;
+const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
 const connection = 'postgres://localhost:5432/face-detector';
@@ -55,7 +56,7 @@ app.post('/api/signin', (req, res) => {
     db.any(`SELECT id, hash, email FROM login WHERE email='${email}'`).then((data) => {
         const isValid = bcrypt.compareSync(`${password}`, data[0].hash);
         if (isValid) {
-         let token = jwt.sign({ _id: data[0].id }, 'cow').toString(); 
+         let token = jwt.sign({ _id: data[0].id }, keys.secret).toString(); 
          db.none(`UPDATE login SET token='${token}' WHERE email='${email}'`).then(() => {
             db.one(`SELECT * FROM users WHERE email='${email}'`).then((doc) => {
                 res.cookie('x-auth', token).send(doc);
@@ -77,11 +78,6 @@ app.delete('/api/signout', auth, (req, res) => {
     
 });
 
-// app.post('/api/image', auth, (req, res) => {
-//     db.none(`UPDATE users SET entries=entries + 1 WHERE email='${req.user.email}'`).then(() => {
-//         res.send('image count incremented');
-//     }).catch((e) => { res.status(400).send({ error: true }) });
-// });
 
 app.post('/api/image', auth, (req, res) => {
     db.none(`UPDATE users SET entries=entries + 1 WHERE email='${req.user.email}'`).then(() => {
