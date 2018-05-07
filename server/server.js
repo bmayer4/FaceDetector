@@ -15,7 +15,7 @@ const pgp = require('pg-promise')();
 //     ssl: true
 // };
 const cn = {
-    host: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: true
 };
 const db = pgp(cn);
