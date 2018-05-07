@@ -9,14 +9,14 @@ const port = process.env.PORT || 3001;
 const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
-//pgp.pg.defaults.ssl = true;
-//const connection = keys.postgresql;
-const cn = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
-};
+pgp.defaults.ssl = true;
+const connection = keys.postgresql;
+// const cn = {
+//     host: process.env.DATABASE_URL,
+//     ssl: true
+// };
 
-const db = pgp(cn);
+const db = pgp(connection);
 
 const app = express();
 
@@ -105,5 +105,5 @@ if (process.env.NODE_ENV === 'production') {
 }
     
 app.listen(port, () => {
-    console.log('app runnning on port 3001');
+    console.log(`app runnning on port ${port}`);
 })
