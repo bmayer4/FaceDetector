@@ -9,6 +9,7 @@ const port = process.env.PORT || 3001;
 const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
+pgp.pg.defaults.ssl = true;
 const connection = keys.postgresql;
 // const cn = {
 //     connectionString: process.env.DATABASE_URL,
