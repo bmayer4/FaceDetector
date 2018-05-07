@@ -18,7 +18,7 @@ const connection = keys.postgresql;
 //     connectionString: process.env.DATABASE_URL,
 //     ssl: true
 // };
-const db = pgp(connetion);
+const db = pgp(connection);
 
 const app = express();
 
