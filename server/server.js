@@ -9,16 +9,16 @@ const port = process.env.PORT || 3001;
 const keys = require('./config/keys');
 
 const pgp = require('pg-promise')();
-//const connection = keys.postgresql;
+const connection = keys.postgresql?ssl=true;
 // const cn = {
 //     connectionString: process.env.DATABASE_URL,
 //     ssl: true
 // };
-const cn = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
-};
-const db = pgp(cn);
+// const cn = {
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: true
+// };
+const db = pgp(connetion);
 
 const app = express();
 
