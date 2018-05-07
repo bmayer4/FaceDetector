@@ -1,8 +1,8 @@
-const pgp = require('pg-promise')();
-const connection = 'postgres://localhost:5432/face-detector';
-const db = pgp(connection);
 const jwt = require('jsonwebtoken');
-const keys = require('../config/keys');
+const keys = require('./../config/keys');
+const pgp = require('pg-promise')();
+const connection = keys.postgresql;
+const db = pgp(connection);
 
 let auth = (req, res, next ) => {
     let token = req.cookies['x-auth'];
