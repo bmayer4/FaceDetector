@@ -16,7 +16,7 @@ const cn = {
     ssl: true
 };
 
-const db = pgp(connectionString);
+const db = pgp(cn);
 
 const app = express();
 
